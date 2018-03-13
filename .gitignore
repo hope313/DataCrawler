@@ -1,4 +1,6 @@
 .git
 package.json
+package-lock.json
 LICENSE
 README.md
+/node_modules
