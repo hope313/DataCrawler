@@ -1,0 +1,23 @@
+doctype html
+html(lang='ko')
+  head
+    title= '물건리스트'
+    script(type='text/javascript').
+      if(foo) {
+        bar(1+5)
+      }
+  body
+    h1  물건리스트
+    ul
+      - for (var item in listData) {
+        li
+          ul
+            li !{listData[item].court_title}
+            li !{listData[item].sagun_title}
+            li !{listData[item].mulbun}
+            li !{listData[item].address}
+            li !{listData[item].img_url}
+            li !{listData[item].eval_price}
+            li !{listData[item].min_price}
+            li !{listData[item].maegak_date}
+      - };
