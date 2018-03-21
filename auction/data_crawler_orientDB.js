@@ -455,3 +455,13 @@ function data_access(sagun1, sagun2, mulbun, usage, status, yuchal, maegak_date,
 function myTrim(x) {
   return x.replace(/^\s+|\s+$/gm,'');
 }
+
+function in_array(tVal, ownArray) {
+  if (typeof ownArray !== 'object') return false;
+  for(var i=0; i<ownArray.length; i++) {
+    if(tVal == ownArray[i]) {
+      return true;
+    }
+  }
+  return false;
+}
