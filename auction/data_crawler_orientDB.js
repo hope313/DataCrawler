@@ -55,10 +55,81 @@ gugunList[15] = ['강서구', '금정구', '기장군', '남구', '동구', '동
           '영도구', '중구', '해운대구'];
 gugunList[16] = ['서귀포시', '제주시'];
 */
-// 해당 지역 조회
-for(var s=0; s<sidoList.length; s++) {
 
-  for(var g=0; g<gugunList[s].length; g++) {
+var sidoGugunList = [
+	['A01', '서울', ['강남구', '관악구', '동작구', '서초구', '종로구', '중구']],
+	['A02', '서울', ['강동구', '광진구', '성동구', '송파구']],
+	['A03', '서울', ['마포구', '서대문구', '용산구', '은평구']],
+	['A04', '서울', ['강서구', '구로구', '금천구', '양천구', '영등포구']]
+/*	['A05', '서울', ['성북구', '강북구', '노원구', '도봉구', '동대문구', '중랑구']],
+	['D01', '경기', ['가평군', '구리시', '남양주시', '동두천시', '양주시', '연천군', '의정부시', '포천시']],
+	['D01', '강원', ['철원군']],
+	['D02', '경기', ['고양시', '파주시']],
+	['E01', '경기', ['수원시', '오산시', '용인시', '화성시']],
+	['E02', '경기', ['광주시', '성남시', '하남시']],
+	['E03', '경기', ['양평군', '여주군', '이천시', '여주시']],
+	['E04', '경기', ['안성시', '평택시']],
+	['E05', '경기', ['광명시', '시흥시', '안산시']],
+	['E06', '경기', ['과천시', '군포시', '안양시', '의왕시']],
+	['C02', '경기', ['김포시', '부천시']],
+	['C01', '인천', ['강화군', '계양구', '남구', '남동구', '동구', '부평구', '서구', '연수구', '옹진군', '중구']],
+	['F01', '강원', ['양구군', '인제군', '춘천시', '홍천군', '화천군']],
+	['F02', '강원', ['강릉시', '동해시', '삼척시']],
+	['F03', '강원', ['고성군', '속초시', '양양군']],
+	['F04', '강원', ['원주시', '횡성군']],
+	['F05', '강원', ['영월군', '정선군', '태백시', '평창군']],
+	['G01', '충북', ['괴산군', '보은군', '증평군', '진천군', '청원군', '청주시']],
+	['G02', '충북', ['음성군', '충주시']],
+	['G03', '충북', ['단양군', '제천시']],
+	['G04', '충북', ['영동군', '옥천군']],
+	['H01', '대전', ['대덕구', '동구', '서구', '유성구', '중구']],
+	['H01', '충남', ['금산군', '연기군']],
+	['H02', '충남', ['천안시', '아산시']],
+	['H03', '충남', ['공주시', '청양군']],
+	['H04', '충남', ['당진군', '서산시', '태안군', '당진시']],
+	['H05', '충남', ['보령시', '서천군', '예산군', '홍성군']],
+	['H06', '충남', ['계룡시', '논산시', '부여군']],
+  ['H01', '세종', ['세종']],
+	['L01', '전남', ['나주시', '화순군', '장성군', '담양군', '곡성군', '영광군']],
+	['L01', '광주', ['광산구', '남구', '동구', '북구', '서구']],
+	['L02', '전남', ['고흥군', '광양시', '구례군', '보성군', '순천시', '여수시']],
+	['L03', '전남', ['목포시', '무안군', '신안군', '영암군', '함평군']],
+  ['L02', '전남', ['여수시']],
+	['L04', '전남', ['강진군', '장흥군']],
+	['L05', '전남', ['완도군', '진도군', '해남군']],
+	['K01', '전북', ['김제시', '무주군', '완주군', '임실군', '전주시', '진안군']],
+	['K02', '전북', ['군산시', '익산시']],
+	['K03', '전북', ['남원시', '순창군', '장수군']],
+	['K04', '전북', ['고창군', '부안군', '정읍시']],
+	['I01', '경북', ['경산시', '영천시', '청도군', '칠곡군']],
+	['I02', '경북', ['경주시', '', '']],
+	['I03', '경북', ['구미시', '김천시', '']],
+	['I04', '경북', ['문경시', '상주시', '예천군']],
+	['I05', '경북', ['봉화군', '안동시', '영주시']],
+	['I06', '경북', ['영덕군', '영양군', '울진군']],
+	['I07', '경북', ['군위군', '의성군', '청송군']],
+	['I08', '경북', ['울릉군', '포항시']],
+	['I09', '경북', ['고령군', '성주군']],
+	['J01', '경남', ['김해시', '의령군', '진해시', '창원시', '함안군']],
+	['J02', '경남', ['거창군', '함양군', '합천군']],
+	['J03', '경남', ['밀양시', '창녕군']],
+	['J04', '경남', ['남해군', '사천시', '산청군', '진주시', '하동군']],
+	['J05', '경남', ['거제시', '고성군', '통영시']],
+	['J06', '경남', ['마산시']],
+	['N01', '경남', ['양산시']],
+	['I01', '대구', ['동구', '남구', '북구', '중구', '수성구']],
+	['I09', '대구', ['서구', '달서구', '달성군']],
+	['N01', '울산', ['남구', '동구', '북구', '울주군', '중구']],
+	['B01', '부산', ['금정구', '동구', '동래구', '부산진구', '연제구', '영도구', '중구']],
+	['B02', '부산', ['기장군', '남구', '수영구', '해운대구']],
+	['B03', '부산', [('강서구', '북구', '사상구', '사하구', '서구']],
+	['M01', '제주', ['서귀포시', '제주시']]*/
+];
+
+// 해당 지역 조회
+for(var s=0; s<sidoGugunList.length; s++) {
+
+  for(var g=0; g<sidoGugunList[s][2].length; g++) {
 
     var p = client.fetch(targetURL, {
       tt1 : '1',
@@ -71,8 +142,8 @@ for(var s=0; s<sidoList.length; s++) {
       SAVE_SRCH_OPT : 'Y',
       pg : '1',
       s_year : '전체',
-      sido : sidoList[s],
-      gugun : gugunList[s][g],
+      sido : sidoGugunList[s][1],
+      gugun : sidoGugunList[s][2][g],
       dong : '',
       s_date_from : '2018.02.26',
       s_date_to : '2018.05.13',
@@ -106,6 +177,19 @@ for(var s=0; s<sidoList.length; s++) {
         if(pKey == 'gugun') gugunTitle = decodeURI(pValue);
       }
       console.log(sidoTitle + " : " + gugunTitle);
+
+      var court_code = '';
+
+      for(var i=0; i<sidoGugunList.length; i++) {
+      	var sido = sidoGugunList[i][1];
+      	if(sido == sidoTitle) {
+      		var gugunList = sidoGugunList[i][2];
+          if(in_array(gugunTitle, gugunList)) {
+            court_code = sidoGugunList[i][0];
+            console.log('@@@@@@@@@@@@@@@@@@@@@', court_code);
+          }
+      	}
+      }
 
       //var sido_name = decodeURI(docInfo.url.split('?')[1].split('&')[0].split('=')[1]);
       //var gugun_name = decodeURI(docInfo.url.split('?')[1].split('&')[2].split('=')[1]);
@@ -143,7 +227,12 @@ for(var s=0; s<sidoList.length; s++) {
 
           var img_url = myTrim(searchResultImgList[i].attribs.src);
           var address = myTrim(searchResultAddressList[i].children[0].data);
-          var dongTitle = myTrim(address.split(' ')[2]);
+          var address_info = address.split(' ');
+          if(address_info.length < 3) {
+            var dongTitle = '-';
+          } else {
+            var dongTitle = myTrim(address.split(' ')[2]);
+          }
           //if(searchResultSpecialConditionList[i] !== undefined) {
           //  var special_condition = myTrim(searchResultSpecialConditionList[i].children[0].data);
           //} else {
@@ -211,6 +300,7 @@ for(var s=0; s<sidoList.length; s++) {
               // 용도
               if(j==15) {
                 var usage = myTrim(item.children[0].data);
+                if(usage == '') usage = '-';
                 console.log("usage : ", usage);
                 //console.log('----------------------------------------------------');
               }
@@ -271,7 +361,7 @@ for(var s=0; s<sidoList.length; s++) {
                 //console.log('----------------------------------------------------');
 
                 // 매각 기일이 설정된 처음 순간에만 데이터 세팅
-                data_access(sagun1, sagun2, mulbun, usage, status, yuchal, maegak_date, img_url, address, special_condition, area, eval_price, min_price, cost_price, sidoTitle, gugunTitle, dongTitle);
+                data_access(sagun1, sagun2, mulbun, usage, status, yuchal, maegak_date, img_url, address, special_condition, area, eval_price, min_price, cost_price, sidoTitle, gugunTitle, dongTitle, court_code);
               }
               //console.log(j, item);
 
@@ -292,7 +382,7 @@ for(var s=0; s<sidoList.length; s++) {
 var request_sql = '';
 
 // DB 데이터 처리
-function data_access(sagun1, sagun2, mulbun, usage, status, yuchal, maegak_date, img_url, address, special_condition, area, eval_price, min_price, cost_price, sido, gugun, dong) {
+function data_access(sagun1, sagun2, mulbun, usage, status, yuchal, maegak_date, img_url, address, special_condition, area, eval_price, min_price, cost_price, sido, gugun, dong, court_code) {
   //console.log("dataInfors", dataInfors);
 
   var sql = "SELECT * FROM t_auction_mulgun_list where court_title = '" + sagun1 + "' and sagun_title = '" + sagun2 + "' and mulbun = '" + mulbun + "'";    // @rid.asString()
@@ -307,7 +397,7 @@ function data_access(sagun1, sagun2, mulbun, usage, status, yuchal, maegak_date,
     if(result.length > 0) {   // 기존 데이터가 존재하면 업데이트
       var sql = "UPDATE t_auction_mulgun_list SET status= '" + status + "', yuchal = '" + yuchal + "', special_condition = '" + special_condition + "', ";
       sql += "img_url = '" + img_url + "', maegak_date = '" + maegak_date + "', min_price = '" + min_price + "', cost_price = '" + cost_price + "', ";
-      sql += "sido = '" + sido + "', gugun = '" + gugun + "', dong = '" + dong + "', reg_date = SYSDATE('yyyy-MM-dd HH:mm:ss') ";
+      sql += "sido = '" + sido + "', gugun = '" + gugun + "', dong = '" + dong + "', reg_date = SYSDATE('yyyy-MM-dd HH:mm:ss'), court_code = '" + court_code + "' ";
       sql += "WHERE court_title = '" + sagun1 + "' and sagun_title = '" + sagun2 + "' and mulbun = '" + mulbun + "'";
       console.log(sql);
 
@@ -315,10 +405,10 @@ function data_access(sagun1, sagun2, mulbun, usage, status, yuchal, maegak_date,
       //  console.log(result);
       //});
     } else {      // 기존 데이터가 없으면 추가
-      var sql = "INSERT INTO t_auction_mulgun_list(court_title, sagun_title, mulbun, usage, area, address, special_condition, status, yuchal, img_url, eval_price, min_price, cost_price, maegak_date, reg_date, sido, gugun, dong) ";
+      var sql = "INSERT INTO t_auction_mulgun_list(court_title, sagun_title, mulbun, usage, area, address, special_condition, status, yuchal, img_url, eval_price, min_price, cost_price, maegak_date, reg_date, sido, gugun, dong, court_code) ";
       //sql += "VALUES(:court_title, :sagun_title, :mulbun, :usage, :area, :address, :special_condition, :status, :yuchal, :img_url, :eval_price, :min_price, :maegak_date, SYSDATE('yyyy-MM-dd HH:mm:ss'))";
       sql += "VALUES ('" + sagun1 + "', '" + sagun2 + "', '" + mulbun + "', '" + usage + "', '" + area + "', '" + address + "', ";
-      sql += "'" + special_condition + "', '" + status + "', '" + yuchal + "', '" + img_url + "', '" + eval_price + "', '" + min_price + "', '" + cost_price + "', '" + maegak_date + "', SYSDATE('yyyy-MM-dd HH:mm:ss'), '" + sido + "', '" + gugun + "', '" + dong + "')";
+      sql += "'" + special_condition + "', '" + status + "', '" + yuchal + "', '" + img_url + "', '" + eval_price + "', '" + min_price + "', '" + cost_price + "', '" + maegak_date + "', SYSDATE('yyyy-MM-dd HH:mm:ss'), '" + sido + "', '" + gugun + "', '" + dong + "', '" + court_code + "')";
       console.log(sql);
 
       /*
