@@ -1,0 +1,11 @@
+doctype html
+html(lang='ko')
+  head
+    title '물건보기'
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+  body
+    - if(msg == 'wrong') {
+      div 잘못된 접근입니다.
+    - } else {
+      div 안녕하세요.
+    - }

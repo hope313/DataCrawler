@@ -2,22 +2,184 @@ doctype html
 html(lang='ko')
   head
     title= '물건리스트'
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    style(type='text/css').
+      th, td {font-size:9pt;text-align:center}
+    script(type='text/javascript' src='http://code.jquery.com/jquery-1.11.2.min.js')
+    //script(type='text/javascript' src='/module/const.js')
     script(type='text/javascript').
-      if(foo) {
-        bar(1+5)
+      function goView(cCode, sTitle) {
+        alert("==" + cCode + "_____" + sTitle + "==");
       }
+
+      function gugunSearch(sido) {
+        if(sido == undefined) sido = $('#sido_list').val();
+
+        $.ajax({
+          type : 'get',
+          url : '/ajax/gugun/' + sido + '/',
+          dataType : 'json',
+          success : function(data) {
+            $("#gugun_list option").remove();
+            $("#dong_list option").remove();
+            $("#dong_list").append("<option value='전체'>전체</option>");
+            for (var item in data) {
+              if(data[item].dong_title !== '') {
+                //if(data[item] == '#{gugun}') {
+                //  $("#gugun_list").append("<option value='" + data[item] + "' selected>" + data[item] + "</option>");
+                //} else {
+                  $("#gugun_list").append("<option value='" + data[item] + "'>" + data[item] + "</option>");
+                //}
+              }
+            }
+            dongSearch(sido, $("#gugun_list option:first").val());
+          },
+          error : function(e) {
+            alert('error : ' + e);
+          }
+        });
+      }
+
+      function dongSearch(sido, gugun) {
+        if(sido == undefined) sido = $('#sido_list').val();
+        if(gugun == undefined) gugun = $('#gugun_list').val();
+
+        $.ajax({
+          type : 'get',
+          url : '/ajax/dong/' + sido + '/' + gugun + '/',
+          dataType : 'json',
+          success : function(data) {
+            $("#dong_list option").remove();
+            for (var item in data) {
+              if(data[item].dong_title.length > 1) {
+                if(data[item].dong_title == '#{dong}') {
+                  $("#dong_list").append("<option value='" + data[item].dong_title + "' selected>" + data[item].dong_title + "</option>");
+                } else {
+                  $("#dong_list").append("<option value='" + data[item].dong_title + "'>" + data[item].dong_title + "</option>");
+                }
+              }
+            }
+          },
+          error : function(e) {
+            alert('error : ' + e);
+          }
+        });
+      }
+
+      function searchMulgunList(frm) {
+        document.location.href = '/list/' + frm.sido.value + '/' + frm.gugun.value + '/' + frm.dong.value;
+
+        return false;
+      }
+
+      $(document).ready(function() {
+        dongSearch('#{sido}', '#{gugun}');
+      });
+
+      var page = 1;
+      $(window).scroll(function() {
+        if($(window).scrollTop() == $(document).height() - $(window).height()) {
+
+          page++;
+
+          if(page <= #{totalPageCount}) {
+
+            $.ajax({
+              type : 'get',
+              url : '/list/#{sido}/#{gugun}/#{dong}/' + page,
+              dataType : 'json',
+              success : function(data) {
+                if(data.result == 'nodata') {
+                  //alert('마지막 페이지입니다.');
+                  return;
+                } else {
+                  var listHtml = '';
+                  for (var item in data) {
+                    listHtml += '<tr>';
+                    listHtml += ' <th>' + data[item].court_title + '</th>';
+                    listHtml += ' <td>' + data[item].sagun_title + ' ' + data[item].mulbun + '</td>';
+                    listHtml += ' <td><img src="' + data[item].img_url + '" title="' + data[item].sagun_title + '" width="60" height="60" />"</td>';
+                    listHtml += ' <td>' + data[item].usage + '</td>';
+                    listHtml += ' <td><a href="/view/' + data[item].court_code + '/' + data[item].sagun_title + '/">' + data[item].address + '</a><br /><span>' + data[item].area + '</span><br /><span style="color:#FF0000">' + data[item].special_condition + '</span></td>';
+                    listHtml += ' <td>' + data[item].eval_price + '</td>';
+                    listHtml += ' <td>' + data[item].min_price + ' ' + data[item].min_rate + '<br /><spanstyle="color:#0000FF">' + data[item].cost_price + ' ' + data[item].cost_rate + '</span></td>';
+                    listHtml += ' <td>' + data[item].status + ' ' + data[item].yuchal + '</td>';
+                    listHtml += ' <td>' + data[item].maegak_date + '</td>';
+                    listHtml += '</tr>';
+                  }
+                  $('tbody').append(listHtml);
+                }
+              },
+              error : function(e) {
+                alert('error : ' + e);
+              }
+            });
+
+          }
+        }
+      });
   body
     h1  물건리스트
-    ul
-      - for (var item in listData) {
-        li
-          ul
-            li !{listData[item].court_title}
-            li !{listData[item].sagun_title}
-            li !{listData[item].mulbun}
-            li !{listData[item].address}
-            li !{listData[item].img_url}
-            li !{listData[item].eval_price}
-            li !{listData[item].min_price}
-            li !{listData[item].maegak_date}
-      - };
+    div - 검색결과 : #{totalCount} 건
+    form(name='search_frm' action='/list/' method='get' onsubmit='searchMulgunList(this);return false;')
+      //legend 물건검색
+      select(id='sido_list' name='sido' onchange='gugunSearch(this.value)')
+        - var sidoIndex = 0;
+        - for(var i=0; i<sidoList.length-1; i++) {
+          - if(sidoList[i] == sido) {
+              - sidoIndex = i;
+                option(value='#{sidoList[i]}' selected #{i}) #{sidoList[i]}
+          - } else {
+              option(value='#{sidoList[i]}') #{sidoList[i]}
+          - };
+        - };
+      select(id='gugun_list' name='gugun' onchange='dongSearch()')
+        - for (var item in gugunList[sidoIndex]) {
+          - if(gugunList[sidoIndex][item] == gugun) {
+              option(value='#{gugunList[sidoIndex][item]}' selected) #{gugunList[sidoIndex][item]}
+          - } else {
+              option(value='#{gugunList[sidoIndex][item]}') #{gugunList[sidoIndex][item]}
+          - };
+        - };
+      select(id='dong_list' name='dong')
+        option(value='#{dong}') #{dong}
+      input(type='submit' value='검색')
+    table#mulgun_list.table.table-striped
+      thead
+      tr
+        th(scope=col) 경매계
+        th(scope=col) 사건번호
+        th(scope=col) 이미지경로
+        th(scope=col) 용도
+        th(scope=col) 주소
+        th(scope=col) 평가금액
+        th(scope=col) 최저금액
+        th(scope=col) 상태(유찰수)
+        th(scope=col) 매각기일
+      tbody
+        - if (listData.length == 0)
+          tr
+            td(colspan=9) 검색 데이터가 존재하지 않습니다.
+        - else
+          - var list_count = listData.length;   // listConf.list_count;     // 페이지당 게시글 개수
+          - for(var item=0; item<list_count; item++) {    //for (var item in listData) {
+            tr
+              th(scope=row) #{listData[item].court_title}
+              td #{listData[item].sagun_title} #{listData[item].mulbun}
+              td
+                img(src='#{listData[item].img_url}' title='#{listData[item].sagun_title}' width='60' height='60')
+              td #{listData[item].usage}
+              // (onclick="goView('#{listData[item].court_code}', '#{listData[item].sagun_title}')")
+              td
+                a(href='/view/#{listData[item].court_code}/#{listData[item].sagun_title}/') #{listData[item].address}
+                br
+                span #{listData[item].area}
+                br
+                span(style='color:#FF0000') #{listData[item].special_condition}
+              td #{listData[item].eval_price}
+              td #{listData[item].min_price} #{listData[item].min_rate}
+                br
+                span(style='color:#0000FF') #{listData[item].cost_price} #{listData[item].cost_rate}
+              td #{listData[item].status} #{listData[item].yuchal}
+              td #{listData[item].maegak_date}
+          - };
