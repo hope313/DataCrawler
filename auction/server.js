@@ -255,9 +255,9 @@ app.get('/ajax/dong/:sido/:gugun', function(req, res) {
 });
 
 // 물건 리스트 페이지당 리스트 출력
-app.get('/ajax/list/:sido/:gugun/:dong/:pageNo', function(result) {
-  res.json(result);
-});
+//app.get('/ajax/list/:sido/:gugun/:dong/:pageNo', function(result) {
+//  res.json(result);
+//});
 
 // 숫자 타입에서 쓸 수 있도록 numberFormat() 함수 추가
 Number.prototype.numberFormat = function(){

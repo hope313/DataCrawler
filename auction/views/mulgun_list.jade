@@ -107,7 +107,7 @@ html(lang='ko')
                     listHtml += ' <td>' + data[item].maegak_date + '</td>';
                     listHtml += '</tr>';
                   }
-                  $('tbody').append(listHtml);
+                  $('tbody tr:last').after(listHtml);
                 }
               },
               error : function(e) {
