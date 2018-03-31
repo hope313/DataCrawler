@@ -137,80 +137,81 @@ app.get(['/list', '/list/:sido/:gugun/:dong', '/list/:sido/:gugun/:dong/:pageNo'
 
 
 
-app.get(['/view/', '/view/:cCode/:sTitle/'], function(req, res) {
+app.get(['/view/', '/view/:cCode/:sTitle/:mulBun'], function(req, res) {
   var court_code = req.params.cCode;
   var sagun_title = req.params.sTitle;
+  var mulbun = mulbunToNumber(req.params.mulBun);
 
-  if(!court_code || !sagun_title) {
+  if(!court_code || !sagun_title || !mulbun) {
     console.log('No data');
     res.render('mulgun_view', {msg:'wrong'})
   } else {
     console.log('==' + court_code + '___' + sagun_title + '==');
 
-    var sql = "SELECT * FROM t_auction_mulgun_list where court_code = '" + court_code + "' and sagun_title = '" + sagun_title + "'";
-    console.log(sql);
-
-    db.query(sql).then(function(result) {
-      //console.log(result);
-      if(result < 1) {
-        console.log('not exists!!');
-        /*--------------------------------------------------------------------------*/
-        client.fetch('http://www.speedauction.co.kr/v3/').then(function(result) {
-          var form = result.$('form[name=login]');
-          var formData = {    // form.field(
-            id : 'hope313',
-            pw : 'speedauction313'
-          };
-          //console.log(form[0].attribs.action);
-          form.submit(formData, function(err, $, res, body) {
-            //console.log($.html());
-            //if(err !== undefined) {
-            //console.log(searchList);
-            for(var s=0; s<searchList.length; s++) {
-              client.fetch('http://www.speedauction.co.kr/v3/M_view/pageview.php', {
-                ismain : '1',
-                courtNo : searchList[s][0],
-                eventNo1 : searchList[s][1],
-                eventNo2 : searchList[s][2],
-                objNo : searchList[s][3]
-              }, function(err, $, res, body) {
-                var docInfo = $.documentInfo();
-                var params = docInfo.url.split('?')[1];
-                var parameters = params.split('&');
-                //var ismain = '';
-                var courtNo = '';
-                var eventNo1 = '';
-                var eventNo2 = '';
-                var objNo = '';
-
-                for(var param in parameters) {
-                  //console.log(param + " : " + parameters[param]);
-                  var pValues = parameters[param].split('=');
-                  var pKey = pValues[0];
-                  var pValue = pValues[1];
-                  //if(pKey == 'ismain') ismain = decodeURI(pValue);
-                  if(pKey == 'courtNo') courtNo = decodeURI(pValue);
-                  if(pKey == 'eventNo1') eventNo1 = decodeURI(pValue);
-                  if(pKey == 'eventNo2') eventNo2 = decodeURI(pValue);
-                  if(pKey == 'objNo') objNo = decodeURI(pValue);
-                }
-                //console.log(courtNo + " : " + eventNo1 + " : " + eventNo2 + " : " + objNo);
-                fs.writeFile('./speed_html/speed_' + courtNo + '_' + eventNo1 + '_' + eventNo2 + '_' + objNo + '.html', $.html(), function(){
-                  console.log('speed_' + courtNo + '_' + eventNo1 + '_' + eventNo2 + '_' + objNo + '.html make!!');
-                  res.render('mulgun_view', {msg:'ok'});
-                });
-              });
-              //console.log(searchList[s][0]);
-            }
-            //} else {
-            //  console.log(err);
-            //}
-          });
+    client.fetch('http://www.speedauction.co.kr/v3/').then(function(result) {
+      var form = result.$('form[name=login]');
+      //console.log(form[0].attribs.name);
+      if(form) {    // (form[0].attribs.name == 'login') {
+        console.log('login needs');
+        var formData = {    // form.field(
+          id : 'hope313',
+          pw : 'speedauction313'
+        };
+        form.submit(formData, function(err, $, res, body) {
+          console.log("err", err);
+          if(err !== undefined) {
+            console.log("1", $.html());
+          }
         });
-        /*--------------------------------------------------------------------------*/
       } else {
-        console.log('exists!!');
+        console.log('already login');
       }
+
+      // http://www.speedauction.co.kr/v3/M_view/pageview.php?is_leftlist=&ismain=1&isnpl=&courtNo=A01&courtNo2=&eventNo1=2017&eventNo2=7881&objNo=1&partner=&teamgubun=&multiobj=&multi_no=&view=&page_mode=
+      var sgInfo = sagun_title.split('-');
+      client.fetch('http://www.speedauction.co.kr/v3/M_view/pageview.php', {
+        is_leftlist : '',
+        ismain : '1',
+        isnpl : '',
+        courtNo : court_code,
+        eventNo1 : sgInfo[0],
+        eventNo2 : sgInfo[1],
+        objNo : mulbun,
+        partner : '',
+        teamgubun : '',
+        multiobj : '',
+        multi_no : '',
+        view : '',
+        page_mode : ''
+      }, function(err, $, res, body) {
+        var docInfo = $.documentInfo();
+        var params = docInfo.url.split('?')[1];
+        var parameters = params.split('&');
+        //var ismain = '';
+        var courtNo = '';
+        var eventNo1 = '';
+        var eventNo2 = '';
+        var objNo = '';
+
+        for(var param in parameters) {
+          //console.log(param + " : " + parameters[param]);
+          var pValues = parameters[param].split('=');
+          var pKey = pValues[0];
+          var pValue = pValues[1];
+          //if(pKey == 'ismain') ismain = decodeURI(pValue);
+          if(pKey == 'courtNo') courtNo = decodeURI(pValue);
+          if(pKey == 'eventNo1') eventNo1 = decodeURI(pValue);
+          if(pKey == 'eventNo2') eventNo2 = decodeURI(pValue);
+          if(pKey == 'objNo') objNo = decodeURI(pValue);
+        }
+        //console.log(courtNo + " : " + eventNo1 + " : " + eventNo2 + " : " + objNo);
+        fs.writeFile('./speed_html/speed_' + courtNo + '_' + eventNo1 + '_' + eventNo2 + '_' + objNo + '.html', $.html(), function(){
+          console.log('speed_' + courtNo + '_' + eventNo1 + '_' + eventNo2 + '_' + objNo + '.html make!!');
+          //res.render('mulgun_view', {msg:'ok'});
+          //process.exit(-1);
+        });
+      });
+
     });
 
     //res.render('mulgun_view', {msg:'ok'})
@@ -278,3 +279,8 @@ String.prototype.numberFormat = function(){
 
     return num.numberFormat();
 };
+
+// 물번 정보를 숫자로 변경([1] --> 1)
+function mulbunToNumber(x) {
+  return x.replace(/\[|\]/gi, "");
+}

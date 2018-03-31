@@ -100,7 +100,7 @@ html(lang='ko')
                     listHtml += ' <td>' + data[item].sagun_title + ' ' + data[item].mulbun + '</td>';
                     listHtml += ' <td><img src="' + data[item].img_url + '" title="' + data[item].sagun_title + '" width="60" height="60" />"</td>';
                     listHtml += ' <td>' + data[item].usage + '</td>';
-                    listHtml += ' <td><a href="/view/' + data[item].court_code + '/' + data[item].sagun_title + '/">' + data[item].address + '</a><br /><span>' + data[item].area + '</span><br /><span style="color:#FF0000">' + data[item].special_condition + '</span></td>';
+                    listHtml += ' <td><a href="/view/' + data[item].court_code + '/' + data[item].sagun_title + '/' + data[item].mulbun + '/">' + data[item].address + '</a><br /><span>' + data[item].area + '</span><br /><span style="color:#FF0000">' + data[item].special_condition + '</span></td>';
                     listHtml += ' <td>' + data[item].eval_price + '</td>';
                     listHtml += ' <td>' + data[item].min_price + ' ' + data[item].min_rate + '<br /><spanstyle="color:#0000FF">' + data[item].cost_price + ' ' + data[item].cost_rate + '</span></td>';
                     listHtml += ' <td>' + data[item].status + ' ' + data[item].yuchal + '</td>';
@@ -171,7 +171,7 @@ html(lang='ko')
               td #{listData[item].usage}
               // (onclick="goView('#{listData[item].court_code}', '#{listData[item].sagun_title}')")
               td
-                a(href='/view/#{listData[item].court_code}/#{listData[item].sagun_title}/') #{listData[item].address}
+                a(href='/view/#{listData[item].court_code}/#{listData[item].sagun_title}/#{listData[item].mulbun}/') #{listData[item].address}
                 br
                 span #{listData[item].area}
                 br
