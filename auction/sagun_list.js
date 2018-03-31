@@ -1,8 +1,8 @@
-var client = require('cheerio-httpcli');
+//var client = require('cheerio-httpcli');
 var OrientDB = require('orientjs');
 
 var server = OrientDB({
-  host : 'localhost',
+  host : '118.129.240.80',
   port : 2424,
   username : 'root',
   password : 'hope313'

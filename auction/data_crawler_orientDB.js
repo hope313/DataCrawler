@@ -295,9 +295,9 @@ for(var s=0; s<sidoGugunList.length; s++) {
                 var sagun1 = myTrim(item.children[5].children[0].data);
                 var sagun2 = myTrim(item.children[5].children[3].children[0].data);
                 if(item.children[5].children[7] !== undefined) {
-                  var mulbun = myTrim(item.children[5].children[7].children[0].data);
+                  var mulbun = mulbunToNumber(myTrim(item.children[5].children[7].children[0].data));
                 } else {
-                  var mulbun = '[1]';
+                  var mulbun = '1'; //'[1]';
                 }
                 console.log("court_title sagun_title : ", sagun1 + ' ' + sagun2 + ' 물번 ' + mulbun);
                 //console.log('----------------------------------------------------');
@@ -345,14 +345,14 @@ for(var s=0; s<sidoGugunList.length; s++) {
 
               // 진행 여부, 유찰 회수
               if(j==23) {
-                var yuchal = myTrim(item.children[2].data);     // 유찰 정보
+                var yuchal = mulbunToNumber(myTrim(item.children[2].data));     // 유찰 정보
                 if(item.children[1].children[0] !== undefined) {
                   var status = myTrim(item.children[1].children[0].data);     // 상태 정보
                 } else {       // 진행여부 정보가 없는 경우
                   var status = (cost_price == 0) ? '유찰' : '매각';
                 }
 
-                if(yuchal == '') yuchal = '(0)';
+                if(yuchal == '') yuchal = '0';  //'(0)';
 
                 // 상태 정보
                 if(item.children[1].children[0] == undefined) {   // 상태 정보가 없는 경우
@@ -480,4 +480,9 @@ function in_array(tVal, ownArray) {
     }
   }
   return false;
+}
+
+// 물번 정보를 숫자로 변경([1] --> 1)
+function mulbunToNumber(x) {
+  return x.replace(/\[|\]/gi, "");
 }
