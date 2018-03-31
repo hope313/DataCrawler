@@ -345,7 +345,7 @@ for(var s=0; s<sidoGugunList.length; s++) {
 
               // 진행 여부, 유찰 회수
               if(j==23) {
-                var yuchal = mulbunToNumber(myTrim(item.children[2].data));     // 유찰 정보
+                var yuchal = yuchalToNumber(myTrim(item.children[2].data));     // 유찰 정보
                 if(item.children[1].children[0] !== undefined) {
                   var status = myTrim(item.children[1].children[0].data);     // 상태 정보
                 } else {       // 진행여부 정보가 없는 경우
@@ -485,4 +485,9 @@ function in_array(tVal, ownArray) {
 // 물번 정보를 숫자로 변경([1] --> 1)
 function mulbunToNumber(x) {
   return x.replace(/\[|\]/gi, "");
+}
+
+// 유찰 정보를 숫자로 변경((1) --> 1)
+function yuchalToNumber(x) {
+  return x.replace(/\(|\)/gi, "");
 }
