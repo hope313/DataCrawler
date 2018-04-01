@@ -166,7 +166,7 @@ for(var s=0; s<sidoGugunList.length; s++) {
       MAIN_CATE : 'web',
       SUB_CATE : 'kyg_all_srch',
       //appt_status9 : '신건',//['신건', '유찰'],      // 입찰결과(신건, 유찰, 진행, 재진행, 매각, 대납, 취하, 변경, 정지, 항고, 기각, 종결, 각하, 기타)
-      list_limit : '100'
+      list_limit : '200'
     });
 
     var processCount = 0;   // 실제 처리 수
