@@ -95,12 +95,13 @@ html(lang='ko')
                 } else {
                   var listHtml = '';
                   for (var item in data) {
+                    var sagun_info = data[item].sagun_title.split('-');
                     listHtml += '<tr>';
                     listHtml += ' <th>' + data[item].court_title + '</th>';
                     listHtml += ' <td>' + data[item].sagun_title + ' [' + data[item].mulbun + ']</td>';
                     listHtml += ' <td><img src="' + data[item].img_url + '" title="' + data[item].sagun_title + '" width="60" height="60" />"</td>';
                     listHtml += ' <td>' + data[item].usage + '</td>';
-                    listHtml += ' <td><a href="/view/' + data[item].court_code + '/' + data[item].sagun_title + '/' + data[item].mulbun + '/">' + data[item].address + '</a><br /><span>' + data[item].area + '</span><br /><span style="color:#FF0000">' + data[item].special_condition + '</span></td>';
+                    listHtml += ' <td><a href="/html/' + sagun_info[0] + '/' + data[item].court_code + '/' + sagun_info[0] + '/' + sagun_info[1] + '/' + data[item].mulbun + '/view.html" target="_blank">' + data[item].address + '</a><br /><span>' + data[item].area + '</span><br /><span style="color:#FF0000">' + data[item].special_condition + '</span></td>';
                     listHtml += ' <td>' + data[item].eval_price + '</td>';
                     listHtml += ' <td>' + data[item].min_price + ' ' + data[item].min_rate + '<br /><spanstyle="color:#0000FF">' + data[item].cost_price + ' ' + data[item].cost_rate + '</span></td>';
                     listHtml += ' <td>' + data[item].status + ' (' + data[item].yuchal + ')</td>';
@@ -163,6 +164,7 @@ html(lang='ko')
         - else
           - var list_count = listData.length;   // listConf.list_count;     // 페이지당 게시글 개수
           - for(var item=0; item<list_count; item++) {    //for (var item in listData) {
+            - var sagun_info = listData[item].sagun_title.split('-');
             tr
               th(scope=row) #{listData[item].court_title}
               td #{listData[item].sagun_title} [#{listData[item].mulbun}]
@@ -171,7 +173,7 @@ html(lang='ko')
               td #{listData[item].usage}
               // (onclick="goView('#{listData[item].court_code}', '#{listData[item].sagun_title}')")
               td
-                a(href='/view/#{listData[item].court_code}/#{listData[item].sagun_title}/#{listData[item].mulbun}/') #{listData[item].address}
+                a(href='/html/#{sagun_info[0]}/#{listData[item].court_code}/#{sagun_info[0]}/#{sagun_info[1]}/#{listData[item].mulbun}/view.html' target='_blank') #{listData[item].address}
                 br
                 span #{listData[item].area}
                 br
