@@ -103,7 +103,7 @@ html(lang='ko')
                     listHtml += ' <td><a href="/view/' + data[item].court_code + '/' + data[item].sagun_title + '/' + data[item].mulbun + '/">' + data[item].address + '</a><br /><span>' + data[item].area + '</span><br /><span style="color:#FF0000">' + data[item].special_condition + '</span></td>';
                     listHtml += ' <td>' + data[item].eval_price + '</td>';
                     listHtml += ' <td>' + data[item].min_price + ' ' + data[item].min_rate + '<br /><spanstyle="color:#0000FF">' + data[item].cost_price + ' ' + data[item].cost_rate + '</span></td>';
-                    listHtml += ' <td>' + data[item].status + ' ' + data[item].yuchal + '</td>';
+                    listHtml += ' <td>' + data[item].status + ' (' + data[item].yuchal + ')</td>';
                     listHtml += ' <td>' + data[item].maegak_date + '</td>';
                     listHtml += '</tr>';
                   }
@@ -180,6 +180,6 @@ html(lang='ko')
               td #{listData[item].min_price} #{listData[item].min_rate}
                 br
                 span(style='color:#0000FF') #{listData[item].cost_price} #{listData[item].cost_rate}
-              td #{listData[item].status} #{listData[item].yuchal}
+              td #{listData[item].status} (#{listData[item].yuchal})
               td #{listData[item].maegak_date}
           - };
