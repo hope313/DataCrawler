@@ -21,7 +21,7 @@ const client = require('cheerio-httpcli');
 const fs = require('fs');
 let ct = require('./module/const');
 
-app.use(express.static('public'));      // static directory
+app.use('/html', express.static('speed_html'));      // static directory
 
 app.set('view engine', 'jade');         // view template
 app.set('views', './views');

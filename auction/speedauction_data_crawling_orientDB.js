@@ -39,7 +39,7 @@ client.fetch('http://www.speedauction.co.kr/v3/').then(function(result) {
 
         if(sido == '대전' && in_array(gugun, searchGugunList)) {
 
-          var sql = "SELECT * FROM t_auction_mulgun_list where sido = '" + sido + "' and gugun = '" + gugun + "' and dong = '상대동'";    // @rid.asString()
+          var sql = "SELECT * FROM t_auction_mulgun_list where sido = '" + sido + "' and gugun = '" + gugun + "' and dong = '봉명동'";    // @rid.asString()
           //console.log(sql);
 
           db.query(sql).then(function(result) {
