@@ -1,6 +1,7 @@
 const client = require('cheerio-httpcli');
 const fs = require('fs');
 const cheerio = require('cheerio');
+var path = require('path');
 
 let ct = require('./module/const');
 
@@ -88,8 +89,10 @@ client.fetch('http://www.speedauction.co.kr/v3/').then(function(result) {
                     if(pKey == 'objNo') objNo = decodeURI(pValue);
                   }
                   //console.log(courtNo + " : " + eventNo1 + " : " + eventNo2 + " : " + objNo);
-                  fs.writeFile('./speed_html/speed_' + courtNo + '_' + eventNo1 + '_' + eventNo2 + '_' + objNo + '.html', $.html(), function(){
-                    console.log('speed_' + courtNo + '_' + eventNo1 + '_' + eventNo2 + '_' + objNo + '.html make!!')
+                  var savePath = './speed_html/' + eventNo1 + '/' + courtNo + '/' + eventNo1 + '/' + eventNo2 + '/' + objNo + '/view.html';
+                  checkSaveDir(savePath);
+                  fs.writeFile(savePath, $.html(), function(){
+                    console.log(savePath + ' make!!')
                   });
                 });
 
@@ -277,4 +280,20 @@ function in_array(tVal, ownArray) {
     }
   }
   return false;
+}
+
+// 저장할 디렉토리 존재유무 확인
+function checkSaveDir(fname) {
+    // 디렉터리 부분만 검출
+    var dir = path.dirname(fname);
+
+    // 디렉토리를 재귀적으로 생성
+    var dirlist = dir.split("/");
+    var p = "";
+    for (var i in dirlist) {
+        p += dirlist[i] + "/";
+        if (!fs.existsSync(p)) {
+            fs.mkdirSync(p);
+        }
+    }
 }
