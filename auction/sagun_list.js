@@ -2,7 +2,7 @@
 var OrientDB = require('orientjs');
 
 var server = OrientDB({
-  host : '118.129.240.80',
+  host : 'localhost',
   port : 2424,
   username : 'root',
   password : 'hope313'
@@ -25,4 +25,5 @@ var param = {
 }
 db.query(sql, param).then(function(result) {
   console.log(result);
+  process.exit(-1);
 });
